@@ -1,0 +1,46 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.55.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 2d1996da24464e87ab869d0f5cb8a6ad530ac7cd Build.PL
+SHA1 1bbc6078b965a215278a993ef47e7cb13a479a5b Changes
+SHA1 a4cb4d07ea99dec88bcddb6d7f6d94e7beb33673 MANIFEST
+SHA1 9628ca7b1a110065ffed868e637465b57a545a25 META.yml
+SHA1 cd14ada78fb37a0d926edd86eddcdf7f939de582 Makefile.PL
+SHA1 2493661c0c75f66be53975331bbcac24cd1dd732 README
+SHA1 46f2c14ed3a91ea3eb43e565d821f540e348e8ef lib/Fey/Loader.pm
+SHA1 c3b8a6f59b14432242597a41efaa529f6d988de3 lib/Fey/Loader/DBI.pm
+SHA1 c4875d735c841c8d6264efc127147d93d52b7783 lib/Fey/Loader/Pg.pm
+SHA1 6fe380391676ba510f03fdae7bfa85f9f9747246 lib/Fey/Loader/SQLite.pm
+SHA1 4abdd24ac762cfa22fb4ab5ea083cffcfffed14a lib/Fey/Loader/mysql.pm
+SHA1 56bbec389e2882dda04594147dbbab3df35f96e0 t/Loader.t
+SHA1 088049b21b01eff43460417e1484e04e86eec504 t/Loader/DBI.t
+SHA1 69bc881e933e1a60cd3252b1d7cc7eb1c2fbce85 t/Loader/Pg.t
+SHA1 a6d3c8a5e461cdb40148df60f3fbba45bc15fbbb t/Loader/SQLite.t
+SHA1 c5929e2087a774205762841d01641ee07a836032 t/Loader/mysql.t
+SHA1 9ade2293d6e5ea77d94532132c89cd205ea85ed7 t/kwalitee.t
+SHA1 7f79c5eabe3dc36313afdd2ae1c60a2c47ef7baf t/lib/Fey/Test/Loader.pm
+SHA1 bf6bffdec42a1333d5b92a925d1b3b9b82a601ca t/lib/Fey/Test/Pg.pm
+SHA1 b3c8e0ab88ed0251d4f8260ab1d882b99cd9bf86 t/lib/Fey/Test/SQLite.pm
+SHA1 2c4829e2e57e10521a02455f57e14d6c1f22f2be t/lib/Fey/Test/mysql.pm
+SHA1 8d08e2e69c623cb64a23b896c9c1f939ae492b94 t/pod-coverage.t
+SHA1 fa09e1f76e152d19f3f46fd2b13b8b6810a04666 t/pod.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+
+iD8DBQFHpOz23Or3ZzQuifMRAkUAAJ9oVfIvwiu/56fZEeOVUfN7thBIvgCfceNt
+vCQwglmXOyq8Fi7q2XbHTYM=
+=m/Zg
+-----END PGP SIGNATURE-----

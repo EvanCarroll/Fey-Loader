@@ -1,6 +1,6 @@
 ---
 name: Fey-Loader
-version: 0.01
+version: 0.02
 author:
   - 'Dave Rolsky, <autarch@urth.org>'
 abstract: Load your schema defintion from a DBMS
@@ -16,7 +16,7 @@ build_requires:
 provides:
   Fey::Loader:
     file: lib/Fey/Loader.pm
-    version: 0.01
+    version: 0.02
   Fey::Loader::DBI:
     file: lib/Fey/Loader/DBI.pm
   Fey::Loader::Pg:

@@ -7,7 +7,7 @@ use Moose;
 
 extends 'Fey::Loader::DBI';
 
-use DBD::SQLite;
+use DBD::SQLite 1.14;
 
 use Fey::Validate qw( validate SCALAR_TYPE );
 
@@ -218,7 +218,7 @@ __END__
 
 =head1 NAME
 
-Fey::Loader::SQLite - Loader for Postgres schemas
+Fey::Loader::SQLite - Loader for SQLite schemas
 
 =head1 SYNOPSIS
 

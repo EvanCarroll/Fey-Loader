@@ -15,17 +15,17 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 d8883e0de3f2fe28b20b5bf60871a500aa380261 Build.PL
-SHA1 a77cf1a0f70b5819aaa02d3bf464bcbd41b621e4 Changes
+SHA1 27b5f71fc09d8709349726ab65b1845b013091cb Changes
 SHA1 a4cb4d07ea99dec88bcddb6d7f6d94e7beb33673 MANIFEST
-SHA1 b93834b134f3f1772088d511145027a7aa8273b7 META.yml
+SHA1 08c26355d214f0ffb546ad76a3c94eda03b62341 META.yml
 SHA1 cd14ada78fb37a0d926edd86eddcdf7f939de582 Makefile.PL
 SHA1 2493661c0c75f66be53975331bbcac24cd1dd732 README
-SHA1 ea56b23cd82c5866ad89c66456ab6bf821aa6527 lib/Fey/Loader.pm
+SHA1 0cb87e92e13f5f9c25211f7b0b54551baac0e33d lib/Fey/Loader.pm
 SHA1 c3b8a6f59b14432242597a41efaa529f6d988de3 lib/Fey/Loader/DBI.pm
 SHA1 c4875d735c841c8d6264efc127147d93d52b7783 lib/Fey/Loader/Pg.pm
 SHA1 ac3cdd891f0ada2e54faa5770a3665d23f7a8553 lib/Fey/Loader/SQLite.pm
 SHA1 43fd6cc0278fe08e3a6777d99805042104d4b765 lib/Fey/Loader/mysql.pm
-SHA1 94e732343a04831d95525c42775f406d8402931c t/Loader.t
+SHA1 a7e2cc9841d2684b66f028b94ec6dc81e7e37bb7 t/Loader.t
 SHA1 088049b21b01eff43460417e1484e04e86eec504 t/Loader/DBI.t
 SHA1 69bc881e933e1a60cd3252b1d7cc7eb1c2fbce85 t/Loader/Pg.t
 SHA1 a6d3c8a5e461cdb40148df60f3fbba45bc15fbbb t/Loader/SQLite.t
@@ -33,14 +33,14 @@ SHA1 c5929e2087a774205762841d01641ee07a836032 t/Loader/mysql.t
 SHA1 9ade2293d6e5ea77d94532132c89cd205ea85ed7 t/kwalitee.t
 SHA1 7f79c5eabe3dc36313afdd2ae1c60a2c47ef7baf t/lib/Fey/Test/Loader.pm
 SHA1 bf6bffdec42a1333d5b92a925d1b3b9b82a601ca t/lib/Fey/Test/Pg.pm
-SHA1 b3c8e0ab88ed0251d4f8260ab1d882b99cd9bf86 t/lib/Fey/Test/SQLite.pm
+SHA1 f1c8e0bc6a50d54d37e8cd14444bcf9cba03a5fd t/lib/Fey/Test/SQLite.pm
 SHA1 2c4829e2e57e10521a02455f57e14d6c1f22f2be t/lib/Fey/Test/mysql.pm
 SHA1 8d08e2e69c623cb64a23b896c9c1f939ae492b94 t/pod-coverage.t
 SHA1 fa09e1f76e152d19f3f46fd2b13b8b6810a04666 t/pod.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.6 (GNU/Linux)
 
-iD8DBQFHplYi3Or3ZzQuifMRAl82AKDI6OtI50iz9gjDGa7PMHgrpKMyfgCg7da4
-g03InGhs3N0wVZp/7MHHVso=
-=sf3T
+iD8DBQFHpnrt3Or3ZzQuifMRAtTIAJ0R7kwS9204geqg0PbKzG0iPzYzoACdEsKk
+nmUrcX9W/iuz4OdNDr5ltGE=
+=S44r
 -----END PGP SIGNATURE-----

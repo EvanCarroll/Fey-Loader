@@ -1,6 +1,6 @@
 ---
 name: Fey-Loader
-version: 0.04
+version: 0.05
 author:
   - 'Dave Rolsky, <autarch@urth.org>'
 abstract: Load your schema defintion from a DBMS
@@ -8,6 +8,7 @@ license: perl
 resources:
   license: http://dev.perl.org/licenses/
 requires:
+  DBI: 0
   Fey: 0
   Moose: 0
   Scalar::Util: 0
@@ -17,7 +18,7 @@ build_requires:
 provides:
   Fey::Loader:
     file: lib/Fey/Loader.pm
-    version: 0.04
+    version: 0.05
   Fey::Loader::DBI:
     file: lib/Fey/Loader/DBI.pm
   Fey::Loader::Pg:

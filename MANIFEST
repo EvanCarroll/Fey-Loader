@@ -5,10 +5,7 @@ lib/Fey/Loader/DBI.pm
 lib/Fey/Loader/mysql.pm
 lib/Fey/Loader/Pg.pm
 lib/Fey/Loader/SQLite.pm
-Makefile.PL
 MANIFEST			This list of files
-META.yml
-README
 t/kwalitee.t
 t/Loader.t
 t/Loader/DBI.t
@@ -17,4 +14,7 @@ t/Loader/Pg.t
 t/Loader/SQLite.t
 t/pod-coverage.t
 t/pod.t
+Makefile.PL
+README
+META.yml
 SIGNATURE    Added here by Module::Build

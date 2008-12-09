@@ -1,8 +1,6 @@
 use strict;
 use warnings;
 
-use lib 't/lib';
-
 use Fey::Test;
 use Fey::Test::Loader;
 use Fey::Test::mysql;
@@ -55,7 +53,6 @@ use Fey::Loader;
             'User.username' =>
                 { type    => 'VARCHAR',
                   length  => 255,
-                  default => Fey::Literal::String->new(''),
                 },
             'User.email' =>
                 { type   => 'TEXT',
@@ -75,7 +72,6 @@ use Fey::Loader;
             'Group.name' =>
                 { type    => 'VARCHAR',
                   length  => 255,
-                  default => Fey::Literal::String->new(''),
                 },
           },
         );

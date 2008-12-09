@@ -100,7 +100,13 @@ sub _add_columns
     my $self  = shift;
     my $table = shift;
 
-    my $sth = $self->dbh()->column_info( undef, undef, $table->name(), '%' );
+    my $sth =
+        $self->dbh()->column_info
+            ( $self->_catalog_name(),
+              $self->_schema_name(),
+              $table->name(),
+              '%'
+            );
 
     while ( my $col_info = $sth->fetchrow_hashref() )
     {
@@ -180,16 +186,25 @@ sub _set_primary_key
     my $self  = shift;
     my $table = shift;
 
-    my $pk_info = $self->dbh()->primary_key_info( undef, undef, $table->name() );
+    my $pk_info =
+        $self->dbh()->primary_key_info
+            ( $self->_catalog_name(),
+              $self->_schema_name(),
+              $table->name()
+            );
 
     return unless $pk_info;
 
-    my @pk;
+    my %pk;
     while ( my $pk_col = $pk_info->fetchrow_hashref() )
     {
-        $pk[ $pk_col->{KEY_SEQ} - 1 ] =
+        # KEY_SEQ refers to the "position" of the column in the table,
+        # not in the key, and so may start at any random number.
+        $pk{ $pk_col->{KEY_SEQ} } =
             $self->_unquote_identifier( $pk_col->{COLUMN_NAME} );
     }
+
+    my @pk = @pk{ sort keys %pk };
 
     $table->add_candidate_key(@pk)
         if @pk;
@@ -200,8 +215,14 @@ sub _set_other_keys
     my $self  = shift;
     my $table = shift;
 
-    my $key_info = $self->dbh()->statistics_info( undef, undef, $table->name(),
-                                                  'unique only', 'quick' );
+    my $key_info =
+        $self->dbh()->statistics_info
+            ( $self->_catalog_name(),
+              $self->_schema_name(),
+              $table->name(),
+              'unique only',
+              'quick'
+            );
 
     return unless $key_info;
 
@@ -246,27 +267,22 @@ sub _add_foreign_keys
                     if defined $fk_info->{$k};
             }
 
-            my $key = $fk_info->{FK_NAME};
+            # The FK_NAME might not be unique (two tables can use the
+            # same FK name).
+            my $key =
+                join "\-", @{ $fk_info }{ qw( FK_NAME FK_TABLE_NAME UK_TABLE_NAME ) };
 
-            $fk{$key}{source_columns}[ $fk_info->{ORDINAL_POSITION} - 1 ] =
+            push @{ $fk{$key}{source_columns} },
                 $schema->table( $fk_info->{FK_TABLE_NAME} )
                        ->column( $fk_info->{FK_COLUMN_NAME} );
 
-            $fk{$key}{target_columns}[ $fk_info->{ORDINAL_POSITION} - 1 ] =
+            push @{ $fk{$key}{target_columns} },
                 $schema->table( $fk_info->{UK_TABLE_NAME} )
                         ->column( $fk_info->{UK_COLUMN_NAME} );
         }
 
         for my $fk_cols ( values %fk )
         {
-            # This is a gross workaround for what seems to be a bug in
-            # DBD::Pg. The ORDINAL_POSITION is sequential across
-            # different fks, so we end up with undef in the array.
-            for my $k ( qw( source_columns target_columns ) )
-            {
-                $fk_cols->{$k} = [ grep { defined } @{ $fk_cols->{$k} } ]
-            }
-
             my $fk = Fey::FK->new( %{$fk_cols} );
 
             $schema->add_foreign_key($fk);
@@ -303,8 +319,12 @@ sub _fk_info_sth
 
     return
         $self->dbh()->foreign_key_info
-            ( undef, undef, $name,
-              undef, undef, undef,
+            ( $self->_catalog_name,
+              $self->_schema_name,
+              $name,
+              $self->_catalog_name,
+              $self->_schema_name,
+              undef,
             );
 }
 

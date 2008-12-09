@@ -1,11 +1,22 @@
-0.05
+0.06    2008-12-09
 
-- Added DBI as a prereq.
+- When adding a primary key, the code only worked if the primary key
+  was the "first" column(s) of the table, where "first" is defined as
+  the order returned by DBI. Reported by Dieter Pearcey.
 
-- Pass catalog and schema name to all the DBI information methods used
-  in Fey::Loader::DBI. This should make it easier to support these
+- I said I did this in 0.05, but apparently I lied ... Pass catalog
+  and schema name to all the DBI information methods used in
+  Fey::Loader::DBI. This should make it easier to support these
   properly for future loaders, like Oracle or Sybase. Patch by Todd
   Hepler.
+
+- If two tables used the same foreign key name to refer to the same
+  foreign table, the loader would blow up. Reported by Dieter Pearcey.
+
+
+0.05    2008-02-24
+
+- Added DBI as a prereq.
 
 
 0.04    2008-02-05

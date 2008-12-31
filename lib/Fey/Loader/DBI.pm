@@ -11,6 +11,30 @@ has 'dbh' =>
       required => 1,
     );
 
+has 'schema_class' =>
+    ( is       => 'ro',
+      isa      => 'ClassName',
+      default  => 'Fey::Schema',
+    );
+
+has 'table_class' =>
+    ( is       => 'ro',
+      isa      => 'ClassName',
+      default  => 'Fey::Table',
+    );
+
+has 'column_class' =>
+    ( is       => 'ro',
+      isa      => 'ClassName',
+      default  => 'Fey::Column',
+    );
+
+has 'fk_class' =>
+    ( is       => 'ro',
+      isa      => 'ClassName',
+      default  => 'Fey::FK',
+    );
+
 use Fey::Validate qw( validate SCALAR_TYPE );
 
 use Fey::Column;
@@ -30,7 +54,7 @@ use Scalar::Util qw( looks_like_number );
 
         my $name = delete $p{name} || $self->dbh()->{Name};
 
-        my $schema = Fey::Schema->new( name => $name );
+        my $schema = $self->schema_class()->new( name => $name );
 
         $self->_add_tables($schema);
         $self->_add_foreign_keys($schema);
@@ -81,7 +105,7 @@ sub _add_table
     my $name = $self->_unquote_identifier( $table_info->{TABLE_NAME} );
 
     my $table =
-        Fey::Table->new
+        $self->table_class()->new
             ( name    => $name,
               is_view => $self->_is_view($table_info),
             );
@@ -112,7 +136,7 @@ sub _add_columns
     {
         my %col = $self->_column_params( $table, $col_info );
 
-        my $col = Fey::Column->new(%col);
+        my $col = $self->column_class()->new(%col);
 
         $table->add_column($col);
     }
@@ -283,7 +307,7 @@ sub _add_foreign_keys
 
         for my $fk_cols ( values %fk )
         {
-            my $fk = Fey::FK->new( %{$fk_cols} );
+            my $fk = $self->fk_class()->new( %{$fk_cols} );
 
             $schema->add_foreign_key($fk);
         }
@@ -364,6 +388,12 @@ This class provides the following methods:
 
 Given a database handle, returns a new C<Fey::Loader::DBI> object. You
 probably want to call C<Fey::Loader->new()> instead, though.
+
+To change the classes used to build up the schema and its related
+objects, you may provide C<schema_class>, C<table_class>,
+C<column_class>, and C<fk_class> parameters; they default to
+C<Fey::Schema>, C<Fey::Table>, C<Fey::Column>, and C<Fey::FK>
+respectively.
 
 =head2 $loader->make_schema( name => $name )
 

@@ -1,6 +1,6 @@
 ---
 name: Fey-Loader
-version: 0.07
+version: 0.08
 author:
   - 'Dave Rolsky, <autarch@urth.org>'
 abstract: Load your schema defintion from a DBMS
@@ -11,6 +11,7 @@ requires:
   DBI: 0
   Fey: 0
   Moose: 0
+  MooseX::Params::Validate: 0.08
   Scalar::Util: 0
 build_requires:
   Fey::Test: 0.06
@@ -18,7 +19,7 @@ build_requires:
 provides:
   Fey::Loader:
     file: lib/Fey/Loader.pm
-    version: 0.07
+    version: 0.08
   Fey::Loader::DBI:
     file: lib/Fey/Loader/DBI.pm
   Fey::Loader::Pg:
@@ -27,7 +28,7 @@ provides:
     file: lib/Fey/Loader/SQLite.pm
   Fey::Loader::mysql:
     file: lib/Fey/Loader/mysql.pm
-generated_by: Module::Build version 0.280801
+generated_by: Module::Build version 0.31012
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
   version: 1.2

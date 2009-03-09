@@ -1,3 +1,11 @@
+0.10    2009-03-09
+
+- For Pg and mysql, we not just query the dbms to get the current
+  database name. This is much safer than trying to parse the DSN. DSN
+  parsing is still used as a fallback for any other dbms, and has been
+  improved a bit.
+
+
 0.09    2009-03-01
 
 - Foreign key handling for MySQL was broken because of an incorrect

@@ -3,6 +3,8 @@ package Fey::Loader::DBI;
 use strict;
 use warnings;
 
+our $VERSION = '0.11';
+
 use Moose;
 use MooseX::Params::Validate qw( validated_hash );
 
@@ -309,7 +311,7 @@ sub _add_foreign_keys
             # The FK_NAME might not be unique (two tables can use the
             # same FK name).
             my $key =
-                join "\-", @{ $fk_info }{ qw( FK_NAME FK_TABLE_NAME UK_TABLE_NAME ) };
+                join q{-}, @{ $fk_info }{ qw( FK_NAME FK_TABLE_NAME UK_TABLE_NAME ) };
 
             push @{ $fk{$key}{source_columns} },
                 $schema->table( $fk_info->{FK_TABLE_NAME} )

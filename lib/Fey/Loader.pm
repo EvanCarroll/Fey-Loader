@@ -3,7 +3,7 @@ package Fey::Loader;
 use strict;
 use warnings;
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 use Fey::Loader::DBI;
 
@@ -55,11 +55,16 @@ __END__
 
 =head1 NAME
 
-Fey::Loader - Load your schema defintion from a DBMS
+Fey::Loader - Load your schema definition from a DBMS
 
 =head1 SYNOPSIS
 
   my $loader = Fey::Loader->new( dbh => $dbh );
+
+  my $loader = Fey::Loader->new( dbh          => $dbh,
+                                 schema_class => '...',
+                                 table_class  => '...',
+                               );
 
   my $schema = $loader->make_schema();
 
@@ -73,6 +78,9 @@ generic loader otherwise.
 The generic loader simply uses the various schema information methods
 specified by C<DBI>. This in turn depends on these methods being
 implemented by the driver.
+
+See the L<Fey::Loader::DBI> class for more details on what parameters the
+C<new()> method accepts.
 
 =head1 METHODS
 

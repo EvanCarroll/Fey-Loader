@@ -1,8 +1,13 @@
 NAME
-    Fey::Loader - Load your schema defintion from a DBMS
+    Fey::Loader - Load your schema definition from a DBMS
 
 SYNOPSIS
       my $loader = Fey::Loader->new( dbh => $dbh );
+
+      my $loader = Fey::Loader->new( dbh          => $dbh,
+                                     schema_class => '...',
+                                     table_class  => '...',
+                                   );
 
       my $schema = $loader->make_schema();
 
@@ -16,11 +21,13 @@ DESCRIPTION
     specified by `DBI'. This in turn depends on these methods being
     implemented by the driver.
 
+    See the Fey::Loader::DBI class for more details on what parameters the
+    `new()' method accepts.
+
 METHODS
     This class provides the following methods:
 
   Fey::Loader->new( dbh => $dbh )
-
     Given a connected `DBI' handle, this method returns a new loader. If an
     appropriate subclass exists, it will be loaded and used. Otherwise, it
     will warn and fall back to using Fey::Loader::DBI.

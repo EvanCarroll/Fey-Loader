@@ -5,26 +5,26 @@ use warnings;
 
 our $VERSION = '0.11';
 
+use Moose;
 use Fey::Loader::DBI;
 
+has dbh => (
+	isa        => 'Object'
+	, is       => 'ro',
+	, weak_ref => 1
+	, required => 1
+);
 
-sub new
-{
-    my $class = shift;
-    my %p     = @_;
+has 'subclass_package' => (
+	isa       => 'Str'
+	, is      => 'ro'
+	, handles => qr/.*/
+	, default => sub {
+		my $self = shift;
+		my $class = $self->meta->name;
+		my $dbh = $self->dbh;
 
-    my $dbh = $p{dbh};
-    my $driver = $dbh->{Driver}{Name};
-
-    my $subclass = $class->_determine_subclass($driver);
-
-    return $subclass->new(%p);
-}
-
-sub _determine_subclass
-{
-    my $class = shift;
-    my $driver = shift;
+		my $driver = $dbh->{Driver}{Name};
 
     my $subclass = $class . '::' . $driver;
 
@@ -36,7 +36,10 @@ sub _determine_subclass
 
     return $subclass if eval "use $subclass; 1;";
 
-    die $@ unless $@ =~ /Can't locate/;
+    if ( $@ ) {
+			die $@ unless $@ =~ /Can't locate/;
+		}
+		else {
 
     warn <<"EOF";
 
@@ -46,7 +49,23 @@ work.
 
 EOF
 
+		}
+
     return $class . '::' . 'DBI';
+	}
+
+);
+
+has '_subclass' => (
+	isa       => 'Object'
+	, is      => 'rw'
+	, handles => ['make_schema']
+);
+
+sub BUILD {
+	my ( $self, $params ) = @_;
+	my $defer_to = $self->subclass_package->new( $params );
+	$self->_subclass( $defer_to->new( $params ) );
 }
 
 1;
@@ -90,7 +109,8 @@ This class provides the following methods:
 
 Given a connected C<DBI> handle, this method returns a new loader. If
 an appropriate subclass exists, it will be loaded and used. Otherwise,
-it will warn and fall back to using L<Fey::Loader::DBI>.
+it will warn and fall back to using L<Fey::Loader::DBI>. Optionally you
+can explicitly state the C<subclass_package> as an argument.
 
 =head1 AUTHOR
 

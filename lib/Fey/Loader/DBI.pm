@@ -8,6 +8,14 @@ our $VERSION = '0.11';
 use Moose;
 use MooseX::Params::Validate qw( validated_hash );
 
+use Fey::Column;
+use Fey::FK;
+use Fey::Schema;
+use Fey::Table;
+
+use Scalar::Util qw( looks_like_number );
+
+
 has 'dbh' =>
     ( is       => 'ro',
       isa      => 'DBI::db',
@@ -45,12 +53,19 @@ has '_dbh_name' =>
       builder => '_build_dbh_name',
     );
 
-use Fey::Column;
-use Fey::FK;
-use Fey::Schema;
-use Fey::Table;
+has 'schema_name' => (
+		is        => 'ro'
+		, isa     => 'Maybe[Str]'
+		, lazy    => 1
+		, builder => '_schema_name'
+);
 
-use Scalar::Util qw( looks_like_number );
+has 'catalog_name' => (
+		is        => 'ro'
+		, isa     => 'Maybe[Str]'
+		, lazy    => 1
+		, builder => '_catalog_name'
+);
 
 sub make_schema
 {
@@ -67,19 +82,6 @@ sub make_schema
     return $schema;
 }
 
-sub _build_dbh_name
-{
-    my $self = shift;
-
-    my $dsn_ish = $self->dbh()->{Name};
-
-    return $dsn_ish unless $dsn_ish =~ /\W/;
-
-    return $1 if $dsn_ish =~ /(?:database|dbname)=([^;]+?)(?:;|\z)/;
-
-    die "Cannot figure out the database name from the DSN - $dsn_ish\n";
-}
-
 sub _add_tables
 {
     my $self   = shift;
@@ -87,7 +89,7 @@ sub _add_tables
 
     my $sth =
         $self->dbh()->table_info
-            ( $self->_catalog_name(), $self->_schema_name(),
+            ( $self->catalog_name(), $self->schema_name(),
               '%', 'TABLE,VIEW' );
 
     while ( my $table_info = $sth->fetchrow_hashref() )
@@ -96,9 +98,6 @@ sub _add_tables
     }
 }
 
-sub _catalog_name { undef }
-
-sub _schema_name { undef }
 
 sub _unquote_identifier
 {
@@ -143,8 +142,8 @@ sub _add_columns
 
     my $sth =
         $self->dbh()->column_info
-            ( $self->_catalog_name(),
-              $self->_schema_name(),
+            ( $self->catalog_name(),
+              $self->schema_name(),
               $table->name(),
               '%'
             );
@@ -217,11 +216,6 @@ sub _default
     }
 }
 
-sub _is_auto_increment
-{
-    return 0;
-}
-
 sub _set_primary_key
 {
     my $self  = shift;
@@ -229,8 +223,8 @@ sub _set_primary_key
 
     my $pk_info =
         $self->dbh()->primary_key_info
-            ( $self->_catalog_name(),
-              $self->_schema_name(),
+            ( $self->catalog_name(),
+              $self->schema_name(),
               $table->name()
             );
 
@@ -258,8 +252,8 @@ sub _set_other_keys
 
     my $key_info =
         $self->dbh()->statistics_info
-            ( $self->_catalog_name(),
-              $self->_schema_name(),
+            ( $self->catalog_name(),
+              $self->schema_name(),
               $table->name(),
               'unique only',
               'quick'
@@ -360,14 +354,42 @@ sub _fk_info_sth
 
     return
         $self->dbh()->foreign_key_info
-            ( $self->_catalog_name,
-              $self->_schema_name,
+            ( $self->catalog_name,
+              $self->schema_name,
               $name,
-              $self->_catalog_name,
-              $self->_schema_name,
+              $self->catalog_name,
+              $self->schema_name,
               undef,
             );
 }
+
+##
+## Start defaults
+##
+
+sub _is_auto_increment { 0 }
+
+sub _schema_name { undef }
+
+sub _catalog_name { undef }
+
+sub _build_dbh_name
+{
+    my $self = shift;
+
+    my $dsn_ish = $self->dbh()->{Name};
+
+    return $dsn_ish unless $dsn_ish =~ /\W/;
+
+    return $1 if $dsn_ish =~ /(?:database|dbname)=([^;]+?)(?:;|\z)/;
+
+    die "Cannot figure out the database name from the DSN - $dsn_ish\n";
+}
+
+##
+## End defaults
+##
+
 
 no Moose;
 __PACKAGE__->meta()->make_immutable();
@@ -397,6 +419,8 @@ available via those methods, like whether a column is auto-incremented.
 For that reason, you probably won't get good results for your schema
 unless there is a driver-specific loader subclass for your DBMS.
 
+Fey::Loader currently loads one schema by default, this is in part because there is no super-schema catalog concept in Fey.
+
 =head1 METHODS
 
 This class provides the following methods:
@@ -411,6 +435,8 @@ objects, you may provide C<schema_class>, C<table_class>,
 C<column_class>, and C<fk_class> parameters; they default to
 C<Fey::Schema>, C<Fey::Table>, C<Fey::Column>, and C<Fey::FK>
 respectively.
+
+In addition, you may provide a C<catalog_name>, and a C<schema_name> in order to target a load that is not hard-coded to in the Fey::Loader's schema.
 
 =head2 $loader->make_schema( name => $name )
 

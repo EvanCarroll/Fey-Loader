@@ -112,6 +112,12 @@ an appropriate subclass exists, it will be loaded and used. Otherwise,
 it will warn and fall back to using L<Fey::Loader::DBI>. Optionally you
 can explicitly state the C<subclass_package> as an argument.
 
+All arguments are handed off to an instance of the C<subclass_package>, and
+all calls to an instance of Fey::Loader are defered to the implimentation
+of the C<subclass_package>. This means there are other arguments that are
+valid to the constructor: case and point, to all subclasses of DBI the 
+C<schema_name> is a valid argument.
+
 =head1 AUTHOR
 
 Dave Rolsky, <autarch@urth.org>

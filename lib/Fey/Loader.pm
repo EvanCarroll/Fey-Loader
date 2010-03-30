@@ -19,39 +19,46 @@ has 'subclass_package' => (
 	isa       => 'Str'
 	, is      => 'ro'
 	, handles => qr/.*/
-	, default => sub {
-		my $self = shift;
+	, initializer => sub {
+    my ( $self, $subclass, $writerSubRef, $attributeMeta ) = @_;
 		my $class = $self->meta->name;
-		my $dbh = $self->dbh;
-
-		my $driver = $dbh->{Driver}{Name};
-
-    my $subclass = $class . '::' . $driver;
-
-    {
-        # Shuts up UNIVERSAL::can
-        no warnings;
-        return $subclass if $subclass->can('new');
-    }
-
-    return $subclass if eval "use $subclass; 1;";
-
+		my $driver = $self->dbh->{Driver}{Name};
+    
+		eval "use $subclass; 1;";
     if ( $@ ) {
 			die $@ unless $@ =~ /Can't locate/;
-		}
-		else {
-
-    warn <<"EOF";
+    	
+			warn <<"EOF";
 
 There is no driver-specific $class subclass for your driver ($driver)
 ... falling back to the base DBI implementation. This may or may not
 work.
 
 EOF
+		
+			$writerSubRef->( $class . '::DBI' );
 
 		}
+		else {
+			$writerSubRef->( $subclass );
+		}
 
-    return $class . '::' . 'DBI';
+	}
+	, default => sub {
+		my $self = shift;
+
+		my $class = $self->meta->name;
+		my $driver = $self->dbh->{Driver}{Name};
+    my $subclass = $class . '::' . $driver;
+ 
+    {
+        # Shuts up UNIVERSAL::can
+        no warnings;
+        return $subclass if $subclass->can('new');
+    }
+
+		$subclass;
+
 	}
 
 );

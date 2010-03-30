@@ -124,6 +124,7 @@ sub _add_table
         $self->table_class()->new
             ( name    => $name,
               is_view => $self->_is_view($table_info),
+              schema  => $schema
             );
 
     $self->_add_columns($table);

@@ -1,7 +1,8 @@
 0.12
 - Fey::Loader - restructured to use Moose, added subclass_package argument
   so you can explicitly impliment an alternative loader - Evan Carroll
-- Fey::Loader::DBI - Added the schema_name, and catalog_name - Evan Carroll
+- Fey::Loader::DBI - Added the schema_name, and catalog_name, also added
+  schema linkage to the table-object creation - Evan Carroll
 
 0.11    2009-11-17
 
